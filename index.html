@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کتاب‌خوان جهانی مدرن - اشتراک‌گذاری دانش با ملل مختلف</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @font-face {
+      font-family: 'Vazir';
+      src: url('fonts/Vazir-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    
+    :root {
+      --primary-color: #007bff;
+      --secondary-color: #f8f9fa;
+      --text-color: #333;
+      --bg-color: #ffffff;
+      --accent-color: #28a745;
+      --header-bg: linear-gradient(135deg, #007bff, #28a745);
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --border-radius: 8px;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Vazir', sans-serif;
+      direction: rtl;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    body.dark-mode {
+      --secondary-color: #343a40;
+      --text-color: #f8f9fa;
+      --bg-color: #212529;
+    }
+    
+    /* نوار بالایی */
+    .top-bar {
+      background: var(--header-bg);
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+    }
+    
+    /* محتوای اصلی */
+    .main-container {
+      display: flex;
+      flex: 1;
+    }
+    
+    /* ستون کناری */
+    .sidebar {
+      width: 280px;
+      background-color: var(--secondary-color);
+      padding: 20px;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+    }
+    
+    .sidebar-section {
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-section h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
+    
+    .book-list, .chapter-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .book-item, .chapter-item {
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .book-item:hover, .chapter-item:hover {
+      background-color: rgba(0, 123, 255, 0.1);
+    }
+    
+    .book-item.active, .chapter-item.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* محتوای مرکزی */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .book-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .reader-controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .text-display {
+      flex: 1;
+      padding: 25px;
+      line-height: 2;
+      font-size: 1.1rem;
+      background-color: var(--bg-color);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+    }
+    
+    /* بخش یادداشت‌ها */
+    .notes-section {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: var(--secondary-color);
+      border-radius: var(--border-radius);
+    }
+    
+    .notes-section h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    
+    .note-item {
+      background: white;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: var(--border-radius);
+      border-right: 4px solid var(--accent-color);
+    }
+    
+    /* پاورقی */
+    footer {
+      background-color: var(--secondary-color);
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #ddd;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-section h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    
+    /* حالت موبایل */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        border-left: none;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- نوار بالایی -->
+  <div class="top-bar">
+    <div class="logo">
+      <i class="fas fa-book-open"></i>
+      <span>کتاب‌خوان جهانی</span>
+    </div>
+    
+    <div class="user-actions">
+      <select id="langSelect" class="btn btn-outline">
+        <option value="fa">فارسی</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="zh">中文</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+      </select>
+      <button class="btn btn-outline" id="themeToggle">
+        <i class="fas fa-moon"></i> تم تاریک
+      </button>
+      <button class="btn btn-primary" id="loginBtn">
+        <i class="fas fa-user"></i> ورود / ثبت‌نام
+      </button>
+    </div>
+  </div>
+  
+  <!-- محتوای اصلی -->
+  <div class="main-container">
+    <!-- ستون کناری -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <h3><i class="fas fa-books"></i> کتاب‌ها</h3>
+        <input type="text" placeholder="جستجو در کتاب‌ها..." style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: var(--border-radius); border: 1px solid #ddd;">
+        <ul class="book-list" id="bookList">
+          <!-- لیست کتاب‌ها به صورت داینامیک پر می‌شود -->
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-list-ul"></i> فهرست کتاب</h3>
+        <input type="text" placeholder="جستجو در فصل‌ها..." style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: var(--border-radius); border: 1px solid #ddd;">
+        <ul class="chapter-list" id="chapterList">
+          <!-- لیست فصل‌ها به صورت داینامیک پر می‌شود -->
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-chart-line"></i> آمار</h3>
+        <div style="background: white; padding: 15px; border-radius: var(--border-radius);">
+          <p>تعداد کتاب‌ها: <strong id="booksCount">0</strong></p>
+          <p>تعداد زبان‌ها: <strong>8</strong></p>
+          <p>تعداد کاربران: <strong id="usersCount">0</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- محتوای مرکزی -->
+    <div class="content-area">
+      <div class="reader-header">
+        <div class="book-title" id="currentBookTitle">لطفاً یک کتاب انتخاب کنید</div>
+        <div class="reader-controls">
+          <button class="btn btn-primary" id="addNoteBtn">
+            <i class="fas fa-sticky-note"></i> افزودن یادداشت
+          </button>
+          <button class="btn btn-outline" id="shareBtn">
+            <i class="fas fa-share-alt"></i> اشتراک‌گذاری
+          </button>
+        </div>
+      </div>
+      
+      <div class="text-display" id="textDisplay">
+        <div style="text-align: center; padding: 50px; color: #666;">
+          <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 20px;"></i>
+          <h3>به کتابخوان جهانی خوش آمدید</h3>
+          <p>برای شروع مطالعه، لطفاً یک کتاب از لیست سمت چپ انتخاب کنید.</p>
+        </div>
+      </div>
+      
+      <div class="notes-section">
+        <h3><i class="fas fa-sticky-note"></i> یادداشت‌های من</h3>
+        <div id="notesList">
+          <p style="text-align: center; color: #666;">هیچ یادداشتی وجود ندارد. برای افزودن یادداشت، بخشی از متن را انتخاب و روی دکمه "افزودن یادداشت" کلیک کنید.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- پاورقی -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>درباره ما</h4>
+        <p>کتابخوان جهانی پلتفرمی است برای اشتراک‌گذاری دانش به صورت رایگان با تمام ملل جهان. ما معتقدیم دانش باید برای همه در دسترس باشد.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>لینک‌های مفید</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="#" style="color: var(--primary-color); text-decoration: none;">صفحه اصلی</a></li>
+          <li><a href="#" style="color: var(--primary-color); text-decoration: none;">کتاب‌ها</a></li>
+          <li><a href="#" style="color: var(--primary-color); text-decoration: none;">درباره ما</a></li>
+          <li><a href="#" style="color: var(--primary-color); text-decoration: none;">تماس با ما</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>تماس با ما</h4>
+        <p>ایمیل: info@globalreader.org</p>
+        <div class="social-links">
+          <a href="#" style="color: var(--primary-color); margin-left: 10px;"><i class="fab fa-telegram"></i></a>
+          <a href="#" style="color: var(--primary-color); margin-left: 10px;"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="color: var(--primary-color); margin-left: 10px;"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+      © ۱۴۰۴ کتاب‌خوان جهانی | طراحی‌شده با ❤️ برای تمام ملل جهان
+    </div>
+  </footer>
+
+  <script>
+    // نمونه داده‌های اولیه
+    let books = [
+      {
+        id: 1,
+        title: "اصول برنامه‌نویسی",
+        author: "دکتر علی محمدی",
+        description: "کتابی جامع برای یادگیری اصول برنامه‌نویسی",
+        chapters: [
+          { title: "مقدمه", content: { fa: "متن مقدمه به فارسی...", en: "Introduction text in English..." } },
+          { title: "متغیرها و انواع داده", content: { fa: "متن فصل اول به فارسی...", en: "Chapter 1 text in English..." } },
+          { title: "ساختارهای کنترل", content: { fa: "متن فصل دوم به فارسی...", en: "Chapter 2 text in English..." } }
+        ],
+        cover: "https://via.placeholder.com/150x200?text=کتاب+۱"
+      },
+      {
+        id: 2,
+        title: "تاریخ جهان",
+        author: "پروفسور جانسون",
+        description: "مروری بر تاریخ جهان از آغاز تاکنون",
+        chapters: [
+          { title: "دوران باستان", content: { fa: "متن دوران باستان به فارسی...", en: "Ancient era text in English..." } },
+          { title: "قرون وسطی", content: { fa: "متن قرون وسطی به فارسی...", en: "Middle Ages text in English..." } }
+        ],
+        cover: "https://via.placeholder.com/150x200?text=کتاب+۲"
+      }
+    ];
+    
+    let currentBook = null;
+    let currentChapter = null;
+    let notes = [];
+    
+    // عناصر DOM
+    const bookList = document.getElementById('bookList');
+    const chapterList = document.getElementById('chapterList');
+    const textDisplay = document.getElementById('textDisplay');
+    const notesList = document.getElementById('notesList');
+    const currentBookTitle = document.getElementById('currentBookTitle');
+    const booksCount = document.getElementById('booksCount');
+    const themeToggle = document.getElementById('themeToggle');
+    const langSelect = document.getElementById('langSelect');
+    const addNoteBtn = document.getElementById('addNoteBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    // مقداردهی اولیه
+    function init() {
+      renderBookList();
+      updateStats();
+      
+      // رویدادها
+      themeToggle.addEventListener('click', toggleTheme);
+      langSelect.addEventListener('change', changeLanguage);
+      addNoteBtn.addEventListener('click', addNote);
+      shareBtn.addEventListener('click', shareBook);
+      loginBtn.addEventListener('click', showLoginModal);
+    }
+    
+    // نمایش لیست کتاب‌ها
+    function renderBookList() {
+      bookList.innerHTML = '';
+      books.forEach(book => {
+        const li = document.createElement('li');
+        li.className = 'book-item';
+        li.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="${book.cover}" alt="${book.title}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;">
+            <div>
+              <div style="font-weight: bold;">${book.title}</div>
+              <div style="font-size: 0.8rem; color: #666;">${book.author}</div>
+            </div>
+          </div>
+        `;
+        li.addEventListener('click', () => selectBook(book));
+        bookList.appendChild(li);
+      });
+    }
+    
+    // انتخاب کتاب
+    function selectBook(book) {
+      currentBook = book;
+      currentBookTitle.textContent = book.title;
+      renderChapterList();
+      
+      // برجسته کردن کتاب انتخاب شده
+      document.querySelectorAll('.book-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      
+      // نمایش اولین فصل
+      if (book.chapters.length > 0) {
+        selectChapter(book.chapters[0]);
+      }
+    }
+    
+    // نمایش لیست فصل‌ها
+    function renderChapterList() {
+      chapterList.innerHTML = '';
+      if (!currentBook) return;
+      
+      currentBook.chapters.forEach(chapter => {
+        const li = document.createElement('li');
+        li.className = 'chapter-item';
+        li.textContent = chapter.title;
+        li.addEventListener('click', () => selectChapter(chapter));
+        chapterList.appendChild(li);
+      });
+    }
+    
+    // انتخاب فصل
+    function selectChapter(chapter) {
+      currentChapter = chapter;
+      const lang = langSelect.value;
+      textDisplay.textContent = chapter.content[lang] || 'متنی برای این زبان موجود نیست.';
+      
+      // برجسته کردن فصل انتخاب شده
+      document.querySelectorAll('.chapter-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      
+      renderNotes();
+    }
+    
+    // تغییر زبان
+    function changeLanguage() {
+      if (currentChapter) {
+        const lang = langSelect.value;
+        textDisplay.textContent = currentChapter.content[lang] || 'متنی برای این زبان موجود نیست.';
+      }
+    }
+    
+    // تغییر تم
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      themeToggle.innerHTML = document.body.classList.contains('dark-mode') 
+        ? '<i class="fas fa-sun"></i> تم روشن' 
+        : '<i class="fas fa-moon"></i> تم تاریک';
+    }
+    
+    // افزودن یادداشت
+    function addNote() {
+      if (!currentBook || !currentChapter) {
+        alert('لطفاً ابتدا یک کتاب و فصل انتخاب کنید.');
+        return;
+      }
+      
+      const selection = window.getSelection().toString().trim();
+      if (!selection) {
+        alert('لطفاً بخشی از متن را انتخاب کنید.');
+        return;
+      }
+      
+      const noteText = prompt('یادداشت خود را وارد کنید:', '');
+      if (noteText) {
+        notes.push({
+          bookId: currentBook.id,
+          chapterTitle: currentChapter.title,
+          selectedText: selection,
+          note: noteText,
+          date: new Date().toLocaleDateString('fa-IR')
+        });
+        renderNotes();
+      }
+    }
+    
+    // نمایش یادداشت‌ها
+    function renderNotes() {
+      notesList.innerHTML = '';
+      
+      if (!currentBook || !currentChapter) return;
+      
+      const chapterNotes = notes.filter(note => 
+        note.bookId === currentBook.id && note.chapterTitle === currentChapter.title
+      );
+      
+      if (chapterNotes.length === 0) {
+        notesList.innerHTML = '<p style="text-align: center; color: #666;">هیچ یادداشتی برای این فصل وجود ندارد.</p>';
+        return;
+      }
+      
+      chapterNotes.forEach((note, index) => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note-item';
+        noteElement.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1;">
+              <div style="font-weight: bold; margin-bottom: 5px;">«${note.selectedText}»</div>
+              <div>${note.note}</div>
+              <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">${note.date}</div>
+            </div>
+            <button class="btn" onclick="deleteNote(${index})" style="background: none; border: none; color: #dc3545; cursor: pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `;
+        notesList.appendChild(noteElement);
+      });
+    }
+    
+    // حذف یادداشت
+    function deleteNote(index) {
+      if (confirm('آیا از حذف این یادداشت مطمئن هستید؟')) {
+        notes.splice(index, 1);
+        renderNotes();
+      }
+    }
+    
+    // اشتراک‌گذاری
+    function shareBook() {
+      if (!currentBook || !currentChapter) {
+        alert('لطفاً ابتدا یک کتاب و فصل انتخاب کنید.');
+        return;
+      }
+      
+      const shareUrl = `${window.location.origin}?book=${currentBook.id}&chapter=${encodeURIComponent(currentChapter.title)}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: currentBook.title,
+          text: `خواندن «${currentChapter.title}» از کتاب «${currentBook.title}»`,
+          url: shareUrl
+        });
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('لینک کتاب در کلیپ‌بورد کپی شد.');
+        });
+      }
+    }
+    
+    // نمایش مودال ورود
+    function showLoginModal() {
+      alert('سیستم ورود/ثبت‌نام به زودی راه‌اندازی خواهد شد.');
+      // در نسخه کامل، این بخش یک مودال زیبا نمایش خواهد داد
+    }
+    
+    // به‌روزرسانی آمار
+    function updateStats() {
+      booksCount.textContent = books.length;
+      // در نسخه کامل، تعداد کاربران از سرور دریافت می‌شود
+    }
+    
+    // راه‌اندازی اولیه
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
