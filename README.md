@@ -1,1 +1,1 @@
-# bakht-yari.com
+bakhti-yari.com
